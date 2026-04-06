@@ -1,35 +1,21 @@
 # realestate-agent
 
-Production-oriented LangGraph multi-agent real estate research system with supervisor/retriever/analyst/fact-checker orchestration, hybrid retrieval, official RAGAs evaluation, and canonical resume-claim reporting.
+Engineering-focused multi-agent real estate research system using LangGraph orchestration, hybrid retrieval, citation-backed answers, official RAGAs evaluation, and reproducible canonical reports.
 
-## Canonical Results (Source of Truth)
+## Key Results
 
-All final metrics and claims are sourced from `reports/final/*` only.
+| Metric | Final Value (`reports/final/*`) |
+|---|---|
+| Corpus scale | 4,680 raw property documents, 18,720 indexed chunks |
+| Evaluation set | 50 benchmark queries |
+| Best configuration | `hybrid_rerank` |
+| Official RAGAs (best config) | Faithfulness `0.6117`, Answer Relevancy `0.4567`, Context Recall `0.7400` |
+| Retrieval uplift vs dense baseline | Hit Rate@k `+0.88`, MRR@k `+0.63`, Unsupported claim rate `-72.5%` |
+| Async latency improvement | 354.01ms -> 229.26ms average (`35.24%` reduction) |
 
-- [corpus_stats.json](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/corpus_stats.json)
-- [evaluation_summary.json](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/evaluation_summary.json)
-- [comparison_table.csv](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/comparison_table.csv)
-- [latency_summary.json](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/latency_summary.json)
-- [resume_claim_support.md](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/resume_claim_support.md)
-- [final_report.md](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/final_report.md)
+## Why This Project Matters
 
-Measured final values:
-- Corpus scale: `4,680` raw documents, `18,720` indexed chunks/passages
-- Evaluation set: `50` benchmark queries
-- Best config: `hybrid_rerank`
-- Official RAGAs (best config):
-  - `faithfulness=0.6117`
-  - `answer_relevancy=0.4567`
-  - `context_recall=0.7400`
-- Baseline (`dense_only_baseline`) to best deltas:
-  - `hit_rate@k: +0.8800`
-  - `mrr@k: +0.6285`
-  - `unsupported_claim_rate: -0.7250`
-  - `faithfulness: +0.2480`
-  - `context_recall: +0.5400`
-- Latency:
-  - sync avg `354.01ms` vs async avg `229.26ms` (`35.24%` reduction)
-  - rerank on vs off avg delta: `-1.50%` (slightly slower with rerank on)
+Generic RAG pipelines can still produce unsupported conclusions, especially on high-stakes workflows like property diligence. This project separates routing, retrieval, analysis, and verification so evidence flow is explicit and auditable. Hybrid retrieval improves grounding breadth, while a dedicated fact-check stage reduces unsupported claims before final output. Official quality metrics and latency benchmarks are part of the release path so improvements are measurable and reproducible.
 
 ## Architecture
 
@@ -51,19 +37,30 @@ flowchart TD
     OUT --> API
 ```
 
-## Repository Structure
+- `Supervisor` decomposes intent and routes the right agent/tool sequence.
+- `Retriever` grounds answers with dense+sparse evidence and reranking.
+- `Analyst` performs synthesis and calculations; `Fact-Checker` verifies support before response finalization.
 
-```text
-realestate-agent/
-  app/
-  data/
-  scripts/
-  tests/
-  reports/final/
-  artifacts/eval/
-```
+## Design Tradeoffs
 
-## Setup
+- Multi-agent vs single-agent: clearer role boundaries improve debuggability and failure isolation at the cost of extra orchestration complexity.
+- Hybrid retrieval vs dense-only: better recall and robustness on mixed wording/structured clues, with additional fusion/rerank latency.
+- Fact-check stage: adds one more pass, but materially improves citation consistency and unsupported-claim handling.
+- Official RAGAs + latency gating: increases evaluation cost/time, but keeps quality and performance claims tied to reproducible evidence.
+
+## Canonical Final Reports
+
+Canonical outputs in `reports/final/` are the source of truth for project performance:
+`reports/final/*` contains canonical final results, while timestamped folders under `artifacts/eval/*` are retained only as historical experiment runs.
+
+- [final_report.md](reports/final/final_report.md)
+- [evaluation_summary.json](reports/final/evaluation_summary.json)
+- [comparison_table.csv](reports/final/comparison_table.csv)
+- [latency_summary.json](reports/final/latency_summary.json)
+- [corpus_stats.json](reports/final/corpus_stats.json)
+- [validated_claims.md](reports/final/validated_claims.md)
+
+## Quickstart
 
 ```bash
 python -m pip install -U pip
@@ -71,26 +68,26 @@ python -m pip install -e .
 cp .env.example .env
 ```
 
-Required environment values for official final runs:
+Official evaluation prerequisites:
 - `OPENAI_API_KEY`
-- `OPENAI_MODEL` (used for RAGAs judge LLM; final run used `gpt-4.1-mini`)
-- `OPENAI_EMBEDDING_MODEL` (used by RAGAs embeddings; final run used `text-embedding-3-small`)
+- `OPENAI_MODEL` (final run used `gpt-4.1-mini`)
+- `OPENAI_EMBEDDING_MODEL` (final run used `text-embedding-3-small`)
 
-## Reproduce Canonical Final Results
+## Reproduce Final Results
 
-### Canonical finalization (single command)
+Canonical finalization:
+
 ```bash
 python scripts/finalize_results.py --max-queries 50 --tag final
 ```
 
-### Cost-minimized canonical finalization using existing run artifacts
+Cost-aware canonical finalization using existing retrieval artifacts:
+
 ```bash
 python scripts/finalize_results.py --max-queries 50 --tag final --reuse-run-dir artifacts/eval/20260406_021052_upgraded4
 ```
 
-This writes canonical files to `reports/final/`.
-
-## API Endpoints
+## API
 
 - `POST /query`
 - `POST /query/structured`
@@ -103,12 +100,18 @@ This writes canonical files to `reports/final/`.
 ## 3-Minute Demo
 
 1. Start API: `python scripts/run_api.py`
-2. Ask a query on `/query/structured` (e.g., Brooklyn undervaluation / risk / comp comparison).
-3. Inspect retrieval transitions on `/debug/retrieval`.
-4. Open [final_report.md](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/final_report.md) and [resume_claim_support.md](/c:/Users/Lenovo/Desktop/RealEstateAgent/reports/final/resume_claim_support.md) for verified final metrics.
+2. Run a comparison/valuation/risk query against `/query/structured`.
+3. Inspect retrieval rank transitions in `/debug/retrieval`.
+4. See `reports/final/final_report.md` for canonical evaluation results.
 
-## Resume-Oriented Highlights (Verified)
+## Repository Layout
 
-- Architected a LangGraph multi-agent real-estate research system indexing `18,720+` property passages with citation-backed outputs.
-- Implemented hybrid retrieval and reranking, improving `hit_rate@k` from `0.00` to `0.88` and `MRR@k` from `0.00` to `0.6285`.
-- Instrumented per-agent latency benchmarking and reduced average response latency by `35.24%` through async tool execution.
+```text
+realestate-agent/
+  app/
+  data/
+  scripts/
+  tests/
+  reports/final/
+  artifacts/eval/
+```

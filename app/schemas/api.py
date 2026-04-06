@@ -62,6 +62,6 @@ class EvaluateResponse(BaseModel):
     quality_metrics_path: str
     latency_metrics_path: str
     comparison_table_path: str
-    resume_claim_report_path: str
+    validated_claims_report_path: str
     report_path: str
     experiment_metadata: dict = Field(default_factory=dict)

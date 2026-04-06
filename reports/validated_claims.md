@@ -1,4 +1,4 @@
-# Resume Claim Support
+# Validated Claims
 
 ## Claim Verification Matrix
 | Status | Claim | Evidence Source |
@@ -17,7 +17,7 @@
 - async_avg_ms: 229.26
 - async_latency_reduction_pct: 35.24
 
-## Conservative Resume Bullet Candidates
-- Architected a LangGraph multi-agent real estate research system indexing 18,720+ property passages with citation-backed responses.
-- Implemented hybrid retrieval (dense + BM25 + reranking + chunking tuning), improving hit_rate@k from 0.0 to 0.88.
-- Instrumented per-agent latency tracing and reduced average response latency by 35.24% through async execution.
+## Conservative project-summary wording
+- LangGraph multi-agent research workflow indexed 18,720+ property passages with citation-backed responses.
+- Hybrid retrieval (dense + BM25 + reranking + chunking tuning) improved hit_rate@k from 0.0 to 0.88.
+- Per-agent latency tracing shows 35.24% average response-time reduction with async execution.

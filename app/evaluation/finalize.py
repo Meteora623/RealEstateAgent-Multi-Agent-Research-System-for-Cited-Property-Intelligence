@@ -158,7 +158,7 @@ def classify_claims(
     return {"verified": verified, "partially_supported": partial, "unsupported": unsupported}
 
 
-def build_resume_bullet_candidates(
+def build_project_summary_candidates(
     *,
     summary: dict[str, Any],
     comparison_rows: list[dict[str, str]],
@@ -173,20 +173,20 @@ def build_resume_bullet_candidates(
     bullets: list[str] = []
     if any("Corpus scale reached" in item for item in claims["verified"]):
         bullets.append(
-            f"Architected a LangGraph multi-agent real-estate research system indexing {int(scale['total_indexed_chunks']):,}+ property passages with citation-backed outputs."
+            f"LangGraph multi-agent workflow processes {int(scale['total_indexed_chunks']):,}+ indexed property passages with citation-backed outputs."
         )
     if any("Retrieval improved from baseline" in item for item in claims["verified"]):
         bullets.append(
-            f"Implemented hybrid retrieval and reranking, improving hit_rate@k from {baseline_row['hit_rate_at_k']} to {best_row['hit_rate_at_k']} and MRR@k from {baseline_row['mrr_at_k']} to {best_row['mrr_at_k']}."
+            f"Hybrid retrieval and reranking improved hit_rate@k from {baseline_row['hit_rate_at_k']} to {best_row['hit_rate_at_k']} and MRR@k from {baseline_row['mrr_at_k']} to {best_row['mrr_at_k']}."
         )
     if any("Async execution reduced avg latency" in item for item in claims["verified"]):
         red = _to_float(latency.get("sync_vs_async_tools", {}).get("avg_latency_reduction_pct"))
         bullets.append(
-            f"Instrumented per-agent latency benchmarking and reduced average response latency by {red:.2f}% through async tool execution."
+            f"Per-agent async execution reduced average response latency by {red:.2f}% in benchmark runs."
         )
     if any("Best config" in item for item in claims["verified"]):
         bullets.append(
-            f"Ran official RAGAs evaluation for four retrieval configurations and selected `{summary['best_configuration']}` with numeric faithfulness, answer_relevancy, and context_recall."
+            f"Official RAGAs evaluation across four retrieval configurations selected `{summary['best_configuration']}` with numeric faithfulness, answer_relevancy, and context_recall."
         )
     if len(bullets) < 3 and any("Best config" in item for item in claims["verified"]):
         bullets.append(
@@ -203,13 +203,13 @@ def build_resume_bullet_candidates(
     return deduped[:5]
 
 
-def build_resume_claim_support_markdown(
+def build_validated_claims_markdown(
     *,
     claims: dict[str, list[str]],
     bullet_candidates: list[str],
 ) -> str:
     lines = [
-        "# Resume Claim Support",
+        "# Validated Claims",
         "",
         "## Verified claims",
     ]
@@ -218,7 +218,7 @@ def build_resume_claim_support_markdown(
     lines.extend([f"- {item}" for item in claims["partially_supported"]] or ["- None"])
     lines.extend(["", "## Unsupported claims"])
     lines.extend([f"- {item}" for item in claims["unsupported"]] or ["- None"])
-    lines.extend(["", "## Conservative resume-safe bullet candidates"])
+    lines.extend(["", "## Conservative project-summary wording"])
     lines.extend([f"- {item}" for item in bullet_candidates[:5]])
     return "\n".join(lines) + "\n"
 
@@ -238,11 +238,11 @@ def build_final_report_markdown(
     sync_to_async = latency.get("sync_vs_async_tools", {}).get("avg_latency_reduction_pct", 0.0)
     rerank_delta = latency.get("rerank_on_vs_off", {}).get("avg_latency_delta_pct", 0.0)
 
-    conservative_wording = bullet_candidates[0] if bullet_candidates else "No verified resume wording available."
+    conservative_wording = bullet_candidates[0] if bullet_candidates else "No verified summary wording available."
     lines = [
         "# Final Canonical Report",
         "",
-        "| corpus_scale | best_config_name | official_ragas_values | retrieval_improvement_deltas | latency_improvement_deltas | conservative_verified_resume_wording |",
+        "| corpus_scale | best_config_name | official_ragas_values | retrieval_improvement_deltas | latency_improvement_deltas | validated_summary |",
         "|---|---|---|---|---|---|",
         (
             f"| docs={int(scale['total_indexed_documents'])}, chunks={int(scale['total_indexed_chunks'])}, queries={int(scale['total_evaluation_queries'])} "

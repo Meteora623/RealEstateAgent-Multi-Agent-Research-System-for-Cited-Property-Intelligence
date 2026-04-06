@@ -2,7 +2,7 @@ from app.evaluation.runner import EvaluationRunner
 from app.schemas.evaluation import ConfigEvaluationResult
 
 
-def test_resume_bullet_candidates_only_from_verified_claims():
+def test_project_summary_candidates_only_from_verified_claims():
     baseline = ConfigEvaluationResult(
         config_name="dense_only_baseline",
         retrieval_mode="dense",
@@ -26,7 +26,7 @@ def test_resume_bullet_candidates_only_from_verified_claims():
         ("Partially supported", "Other claim", "x"),
         ("Verified", "Improved retrieval hit_rate@k by +0.500 from dense baseline.", "comparison_table.csv"),
     ]
-    bullets = EvaluationRunner._resume_bullet_candidates(
+    bullets = EvaluationRunner._project_summary_candidates(
         claim_rows=claims,
         scale_metrics={"total_indexed_chunks": 16000},
         baseline=baseline,

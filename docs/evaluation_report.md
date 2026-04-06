@@ -8,7 +8,7 @@ Every evaluation run creates:
 - `artifacts/eval/<run_id>/latency_metrics.json`
 - `artifacts/eval/<run_id>/comparison_table.csv`
 - `artifacts/eval/<run_id>/evaluation_report.md`
-- `artifacts/eval/<run_id>/resume_claim_support.md`
+- `artifacts/eval/<run_id>/validated_claims.md`
 - `artifacts/eval/<run_id>/official_ragas_gate.json`
 
 And updates:
@@ -16,7 +16,9 @@ And updates:
 - `reports/corpus_stats.json`
 - `reports/corpus_stats.md`
 - `reports/evaluation_summary.md`
-- `reports/resume_claim_support.md`
+- `reports/validated_claims.md`
+
+`reports/final/*` is the canonical source of truth for final reporting; timestamped directories under `artifacts/eval/*` are historical run artifacts.
 
 ## Official RAGAs Gate
 
@@ -30,8 +32,7 @@ When `run_ragas=true`, the runner enforces a gate for the best config:
 
 If `REQUIRE_OFFICIAL_RAGAS_BEST_CONFIG=true`, evaluation fails when this gate is not met.
 
-## Resume Claim Policy
+## Claim Validation Policy
 
-Use resume wording only from the `Verified` section in `reports/resume_claim_support.md`.
-Claims without verified evidence should be treated as partial or unsupported.
-
+Use only verified, evidence-backed wording from `reports/validated_claims.md`.
+Claims without verified evidence should be treated as partially supported or unsupported.

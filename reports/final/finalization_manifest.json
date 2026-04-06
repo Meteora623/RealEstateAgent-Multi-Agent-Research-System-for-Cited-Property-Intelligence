@@ -7,7 +7,7 @@
     "evaluation_summary": "reports/final/evaluation_summary.json",
     "comparison_table": "reports/final/comparison_table.csv",
     "latency_summary": "reports/final/latency_summary.json",
-    "resume_claim_support": "reports/final/resume_claim_support.md",
+    "validated_claims": "reports/final/validated_claims.md",
     "final_report": "reports/final/final_report.md"
   },
   "acceptance_checks": {

@@ -232,16 +232,16 @@ class EvaluationRunner:
             best_configuration,
             official_gate,
         )
-        self._write_resume_claim_support(
-            run_dir / "resume_claim_support.md",
+        self._write_validated_claims_report(
+            run_dir / "validated_claims.md",
             scale_metrics,
             results,
             latency_experiments,
             best_configuration,
             official_gate,
         )
-        self._write_resume_claim_support(
-            self.settings.reports_path / "resume_claim_support.md",
+        self._write_validated_claims_report(
+            self.settings.reports_path / "validated_claims.md",
             scale_metrics,
             results,
             latency_experiments,
@@ -627,7 +627,7 @@ class EvaluationRunner:
         ]
         path.write_text("\n".join(lines), encoding="utf-8")
 
-    def _write_resume_claim_support(
+    def _write_validated_claims_report(
         self,
         path: Path,
         scale_metrics: dict[str, Any],
@@ -687,7 +687,7 @@ class EvaluationRunner:
             claim_rows.append(("Unsupported", "Missing sync/async latency measurements.", "latency_metrics.json"))
 
         lines = [
-            "# Resume Claim Support",
+            "# Validated Claims",
             "",
             "## Claim Verification Matrix",
             "| Status | Claim | Evidence Source |",
@@ -707,9 +707,9 @@ class EvaluationRunner:
             f"- async_avg_ms: {async_avg}",
             f"- async_latency_reduction_pct: {async_reduction}",
             "",
-            "## Conservative Resume Bullet Candidates",
+            "## Conservative project-summary wording",
         ]
-        for bullet in self._resume_bullet_candidates(
+        for bullet in self._project_summary_candidates(
             claim_rows=claim_rows,
             scale_metrics=scale_metrics,
             baseline=baseline,
@@ -721,7 +721,7 @@ class EvaluationRunner:
         path.write_text("\n".join(lines), encoding="utf-8")
 
     @staticmethod
-    def _resume_bullet_candidates(
+    def _project_summary_candidates(
         claim_rows: list[tuple[str, str, str]],
         scale_metrics: dict[str, Any],
         baseline: ConfigEvaluationResult | None,
@@ -733,19 +733,19 @@ class EvaluationRunner:
 
         if any("Indexed" in claim for claim in verified_claims):
             bullets.append(
-                f"Architected a LangGraph multi-agent real estate research system indexing {int(scale_metrics.get('total_indexed_chunks', 0)):,}+ property passages with citation-backed responses."
+                f"LangGraph multi-agent research workflow indexed {int(scale_metrics.get('total_indexed_chunks', 0)):,}+ property passages with citation-backed responses."
             )
         if baseline and best and any("retrieval hit_rate@k" in claim for claim in verified_claims):
             bullets.append(
-                f"Implemented hybrid retrieval (dense + BM25 + reranking + chunking tuning), improving hit_rate@k from {baseline.retrieval_metrics.get('hit_rate_at_k')} to {best.retrieval_metrics.get('hit_rate_at_k')}."
+                f"Hybrid retrieval (dense + BM25 + reranking + chunking tuning) improved hit_rate@k from {baseline.retrieval_metrics.get('hit_rate_at_k')} to {best.retrieval_metrics.get('hit_rate_at_k')}."
             )
         if baseline and best and any("Official RAGAs composite improved" in claim for claim in verified_claims):
             bullets.append(
-                f"Built an official RAGAs harness and improved faithfulness/relevancy/recall from dense baseline to {best.config_name}."
+                f"Official RAGAs quality improved on faithfulness/relevancy/recall from dense baseline to {best.config_name}."
             )
         if any("Reduced average latency" in claim for claim in verified_claims):
             bullets.append(
-                f"Instrumented per-agent latency tracing and reduced average response latency by {async_reduction:.2f}% through async execution."
+                f"Per-agent latency tracing shows {async_reduction:.2f}% average response-time reduction with async execution."
             )
         if not bullets:
             bullets.append(

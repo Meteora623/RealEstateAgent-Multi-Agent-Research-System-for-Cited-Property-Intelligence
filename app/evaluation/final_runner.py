@@ -8,8 +8,8 @@ from app.core.config import Settings
 from app.evaluation.finalize import (
     build_evaluation_summary_json,
     build_final_report_markdown,
-    build_resume_bullet_candidates,
-    build_resume_claim_support_markdown,
+    build_project_summary_candidates,
+    build_validated_claims_markdown,
     classify_claims,
     find_row,
     load_comparison_rows,
@@ -189,14 +189,14 @@ def run_final_canonical_pipeline(
         comparison_rows=comparison_rows,
         latency_metrics=latency_metrics,
     )
-    bullet_candidates = build_resume_bullet_candidates(
+    bullet_candidates = build_project_summary_candidates(
         summary=evaluation_summary,
         comparison_rows=comparison_rows,
         claims=claims,
     )
     if len(bullet_candidates) < 3:
         raise RuntimeError(
-            "Unable to produce at least 3 conservative resume-safe bullets from verified metrics."
+            "Unable to produce at least 3 conservative project-summary lines from verified metrics."
         )
 
     _validate_final_acceptance(
@@ -227,8 +227,8 @@ def run_final_canonical_pipeline(
         "timings_by_stage_path": str((run_dir / "timings_by_stage.json").as_posix()),
     }
     write_json(final_dir / "latency_summary.json", latency_summary)
-    (final_dir / "resume_claim_support.md").write_text(
-        build_resume_claim_support_markdown(claims=claims, bullet_candidates=bullet_candidates),
+    (final_dir / "validated_claims.md").write_text(
+        build_validated_claims_markdown(claims=claims, bullet_candidates=bullet_candidates),
         encoding="utf-8",
     )
     (final_dir / "final_report.md").write_text(
@@ -250,7 +250,7 @@ def run_final_canonical_pipeline(
             "evaluation_summary": str((final_dir / "evaluation_summary.json").as_posix()),
             "comparison_table": str((final_dir / "comparison_table.csv").as_posix()),
             "latency_summary": str((final_dir / "latency_summary.json").as_posix()),
-            "resume_claim_support": str((final_dir / "resume_claim_support.md").as_posix()),
+            "validated_claims": str((final_dir / "validated_claims.md").as_posix()),
             "final_report": str((final_dir / "final_report.md").as_posix()),
         },
         "acceptance_checks": {

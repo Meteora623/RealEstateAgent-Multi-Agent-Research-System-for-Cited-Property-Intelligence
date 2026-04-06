@@ -104,7 +104,7 @@ async def evaluate(
             quality_metrics_path=f"{run_dir}/quality_metrics.json",
             latency_metrics_path=f"{run_dir}/latency_metrics.json",
             comparison_table_path=f"{run_dir}/comparison_table.csv",
-            resume_claim_report_path=f"{run_dir}/resume_claim_support.md",
+            validated_claims_report_path=f"{run_dir}/validated_claims.md",
             report_path=f"{run_dir}/evaluation_report.md",
             experiment_metadata={
                 "scale_metrics": summary.scale_metrics,
