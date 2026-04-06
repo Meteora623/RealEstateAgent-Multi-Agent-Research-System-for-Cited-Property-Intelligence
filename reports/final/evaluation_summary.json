@@ -1,0 +1,331 @@
+{
+  "scale_metrics": {
+    "total_indexed_documents": 4680,
+    "total_indexed_chunks": 18720,
+    "total_evaluation_queries": 50,
+    "total_metadata_fields_used_for_filtering": 14
+  },
+  "best_configuration": "hybrid_rerank",
+  "official_ragas_validation": {
+    "best_config_official_ragas_complete": true,
+    "reason": "Official gate passed."
+  },
+  "config_results": [
+    {
+      "config_name": "dense_only_baseline",
+      "retrieval_mode": "dense",
+      "rerank": false,
+      "semantic_chunking": false,
+      "chunking_strategy": "fixed",
+      "top_k": 4,
+      "candidate_pool_size": 10,
+      "fusion_alpha": 1.0,
+      "metric_source": "official_ragas",
+      "ragas_metrics": {
+        "faithfulness": 0.3636666666666667,
+        "answer_relevancy": 0.46689358483795723,
+        "context_recall": 0.2,
+        "context_precision": 0.4088888888735925
+      },
+      "retrieval_metrics": {
+        "hit_rate_at_k": 0.0,
+        "mrr_at_k": 0.0,
+        "citation_coverage": 0.0,
+        "unsupported_claim_rate": 0.96
+      },
+      "latency_metrics": {
+        "avg_ms": 269.05,
+        "p50_ms": 279.89,
+        "p95_ms": 283.0
+      },
+      "notes": [
+        "RAGAs mode set to fallback.",
+        "run_ragas=false, using fallback quality metrics only.",
+        "Canonical finalization reused prior retrieval artifacts."
+      ]
+    },
+    {
+      "config_name": "hybrid_baseline",
+      "retrieval_mode": "hybrid",
+      "rerank": false,
+      "semantic_chunking": false,
+      "chunking_strategy": "fixed",
+      "top_k": 6,
+      "candidate_pool_size": 24,
+      "fusion_alpha": 0.55,
+      "metric_source": "official_ragas",
+      "ragas_metrics": {
+        "faithfulness": 0.5496666666666666,
+        "answer_relevancy": 0.4565607316847242,
+        "context_recall": 0.57,
+        "context_precision": 0.4908666666510148
+      },
+      "retrieval_metrics": {
+        "hit_rate_at_k": 0.82,
+        "mrr_at_k": 0.5557,
+        "citation_coverage": 0.7333,
+        "unsupported_claim_rate": 0.325
+      },
+      "latency_metrics": {
+        "avg_ms": 140.09,
+        "p50_ms": 109.04,
+        "p95_ms": 383.89
+      },
+      "notes": [
+        "RAGAs mode set to fallback.",
+        "run_ragas=false, using fallback quality metrics only.",
+        "Canonical finalization reused prior retrieval artifacts."
+      ]
+    },
+    {
+      "config_name": "hybrid_rerank",
+      "retrieval_mode": "hybrid",
+      "rerank": true,
+      "semantic_chunking": true,
+      "chunking_strategy": "semantic",
+      "top_k": 8,
+      "candidate_pool_size": 36,
+      "fusion_alpha": 0.62,
+      "metric_source": "official_ragas",
+      "ragas_metrics": {
+        "faithfulness": 0.6116666666666668,
+        "answer_relevancy": 0.4567378305459469,
+        "context_recall": 0.74,
+        "context_precision": 0.4638503401191805
+      },
+      "retrieval_metrics": {
+        "hit_rate_at_k": 0.88,
+        "mrr_at_k": 0.6285,
+        "citation_coverage": 0.7967,
+        "unsupported_claim_rate": 0.235
+      },
+      "latency_metrics": {
+        "avg_ms": 112.66,
+        "p50_ms": 109.78,
+        "p95_ms": 125.03
+      },
+      "notes": [
+        "RAGAs mode set to fallback.",
+        "run_ragas=false, using fallback quality metrics only.",
+        "Canonical finalization reused prior retrieval artifacts."
+      ]
+    },
+    {
+      "config_name": "hybrid_rerank_semantic",
+      "retrieval_mode": "hybrid",
+      "rerank": true,
+      "semantic_chunking": true,
+      "chunking_strategy": "section_semantic",
+      "top_k": 8,
+      "candidate_pool_size": 28,
+      "fusion_alpha": 0.58,
+      "metric_source": "official_ragas",
+      "ragas_metrics": {
+        "faithfulness": 0.5564285714285714,
+        "answer_relevancy": 0.4559470868754434,
+        "context_recall": 0.24,
+        "context_precision": 0.38652222220927146
+      },
+      "retrieval_metrics": {
+        "hit_rate_at_k": 0.86,
+        "mrr_at_k": 0.6339,
+        "citation_coverage": 0.7933,
+        "unsupported_claim_rate": 0.36
+      },
+      "latency_metrics": {
+        "avg_ms": 175.84,
+        "p50_ms": 178.82,
+        "p95_ms": 194.19
+      },
+      "notes": [
+        "RAGAs mode set to fallback.",
+        "run_ragas=false, using fallback quality metrics only.",
+        "Canonical finalization reused prior retrieval artifacts."
+      ]
+    }
+  ],
+  "baseline_to_best_deltas": {
+    "faithfulness_delta": 0.248,
+    "answer_relevancy_delta": -0.0102,
+    "context_recall_delta": 0.54,
+    "hit_rate_at_k_delta": 0.88,
+    "mrr_at_k_delta": 0.6285,
+    "unsupported_claim_rate_delta": -0.725
+  },
+  "latency": {
+    "sync_vs_async_tools": {
+      "sync": {
+        "avg_ms": 354.01,
+        "p50_ms": 356.59,
+        "p95_ms": 498.34,
+        "retrieval_time_ms": {
+          "avg_ms": 101.93,
+          "p50_ms": 104.01,
+          "p95_ms": 118.28
+        },
+        "reranking_time_ms": {
+          "avg_ms": 0.28,
+          "p50_ms": 0.29,
+          "p95_ms": 0.33
+        },
+        "per_agent_timing_ms": {
+          "supervisor": {
+            "avg_ms": 0.04,
+            "p50_ms": 0.03,
+            "p95_ms": 0.06
+          },
+          "retriever": {
+            "avg_ms": 103.49,
+            "p50_ms": 105.54,
+            "p95_ms": 119.82
+          },
+          "analyst": {
+            "avg_ms": 128.4,
+            "p50_ms": 136.34,
+            "p95_ms": 143.73
+          },
+          "fact_checker": {
+            "avg_ms": 0.33,
+            "p50_ms": 0.3,
+            "p95_ms": 0.52
+          },
+          "finalize": {
+            "avg_ms": 0.08,
+            "p50_ms": 0.06,
+            "p95_ms": 0.1
+          }
+        }
+      },
+      "async": {
+        "avg_ms": 229.26,
+        "p50_ms": 262.92,
+        "p95_ms": 313.18,
+        "retrieval_time_ms": {
+          "avg_ms": 101.49,
+          "p50_ms": 102.74,
+          "p95_ms": 118.89
+        },
+        "reranking_time_ms": {
+          "avg_ms": 0.28,
+          "p50_ms": 0.28,
+          "p95_ms": 0.32
+        },
+        "per_agent_timing_ms": {
+          "supervisor": {
+            "avg_ms": 0.04,
+            "p50_ms": 0.03,
+            "p95_ms": 0.05
+          },
+          "retriever": {
+            "avg_ms": 103.04,
+            "p50_ms": 104.29,
+            "p95_ms": 120.51
+          },
+          "analyst": {
+            "avg_ms": 45.5,
+            "p50_ms": 46.3,
+            "p95_ms": 51.7
+          },
+          "fact_checker": {
+            "avg_ms": 0.3,
+            "p50_ms": 0.28,
+            "p95_ms": 0.41
+          },
+          "finalize": {
+            "avg_ms": 0.07,
+            "p50_ms": 0.06,
+            "p95_ms": 0.14
+          }
+        }
+      },
+      "avg_latency_reduction_pct": 35.24
+    },
+    "rerank_on_vs_off": {
+      "rerank_off": {
+        "avg_ms": 226.99,
+        "p50_ms": 264.86,
+        "p95_ms": 311.62,
+        "retrieval_time_ms": {
+          "avg_ms": 101.67,
+          "p50_ms": 102.17,
+          "p95_ms": 117.51
+        },
+        "reranking_time_ms": {
+          "avg_ms": 0.0,
+          "p50_ms": 0.0,
+          "p95_ms": 0.0
+        },
+        "per_agent_timing_ms": {
+          "supervisor": {
+            "avg_ms": 0.03,
+            "p50_ms": 0.03,
+            "p95_ms": 0.04
+          },
+          "retriever": {
+            "avg_ms": 102.91,
+            "p50_ms": 103.39,
+            "p95_ms": 118.73
+          },
+          "analyst": {
+            "avg_ms": 44.05,
+            "p50_ms": 43.09,
+            "p95_ms": 52.16
+          },
+          "fact_checker": {
+            "avg_ms": 0.29,
+            "p50_ms": 0.28,
+            "p95_ms": 0.34
+          },
+          "finalize": {
+            "avg_ms": 0.06,
+            "p50_ms": 0.06,
+            "p95_ms": 0.08
+          }
+        }
+      },
+      "rerank_on": {
+        "avg_ms": 230.4,
+        "p50_ms": 264.15,
+        "p95_ms": 313.27,
+        "retrieval_time_ms": {
+          "avg_ms": 101.01,
+          "p50_ms": 103.05,
+          "p95_ms": 117.87
+        },
+        "reranking_time_ms": {
+          "avg_ms": 0.28,
+          "p50_ms": 0.29,
+          "p95_ms": 0.34
+        },
+        "per_agent_timing_ms": {
+          "supervisor": {
+            "avg_ms": 0.03,
+            "p50_ms": 0.03,
+            "p95_ms": 0.04
+          },
+          "retriever": {
+            "avg_ms": 102.58,
+            "p50_ms": 104.73,
+            "p95_ms": 119.42
+          },
+          "analyst": {
+            "avg_ms": 45.85,
+            "p50_ms": 46.66,
+            "p95_ms": 51.57
+          },
+          "fact_checker": {
+            "avg_ms": 0.28,
+            "p50_ms": 0.27,
+            "p95_ms": 0.35
+          },
+          "finalize": {
+            "avg_ms": 0.06,
+            "p50_ms": 0.06,
+            "p95_ms": 0.1
+          }
+        }
+      },
+      "avg_latency_delta_pct": -1.5
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "canonical_reports_dir": "reports/final",
+  "source_run_dir": "artifacts/eval/20260406_021052_upgraded4",
+  "best_configuration": "hybrid_rerank",
+  "required_files": {
+    "corpus_stats": "reports/final/corpus_stats.json",
+    "evaluation_summary": "reports/final/evaluation_summary.json",
+    "comparison_table": "reports/final/comparison_table.csv",
+    "latency_summary": "reports/final/latency_summary.json",
+    "resume_claim_support": "reports/final/resume_claim_support.md",
+    "final_report": "reports/final/final_report.md"
+  },
+  "acceptance_checks": {
+    "raw_documents": 4680,
+    "indexed_chunks": 18720,
+    "evaluation_queries": 50,
+    "best_config_official_ragas_complete": true
+  }
+}

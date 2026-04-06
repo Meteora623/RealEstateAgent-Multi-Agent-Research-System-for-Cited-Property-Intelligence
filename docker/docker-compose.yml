@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: realestate-agent-api
+    env_file:
+      - ../.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ..:/workspace
+    command: python scripts/run_api.py
+
+  ui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: realestate-agent-ui
+    env_file:
+      - ../.env
+    ports:
+      - "8501:8501"
+    volumes:
+      - ..:/workspace
+    command: streamlit run app/ui.py --server.address 0.0.0.0 --server.port 8501
+    depends_on:
+      - api
+

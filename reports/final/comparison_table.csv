@@ -1,0 +1,5 @@
+config_name,chunking_strategy,retrieval_mode,rerank,top_k,candidate_pool_size,fusion_alpha,metric_source,faithfulness,answer_relevancy,context_recall,context_precision,hit_rate_at_k,mrr_at_k,citation_coverage,unsupported_claim_rate,avg_latency_ms,p50_latency_ms,p95_latency_ms
+dense_only_baseline,fixed,dense,False,4,10,1.0,official_ragas,0.3636666666666667,0.46689358483795723,0.2,0.4088888888735925,0.0,0.0,0.0,0.96,269.05,279.89,283.0
+hybrid_baseline,fixed,hybrid,False,6,24,0.55,official_ragas,0.5496666666666666,0.4565607316847242,0.57,0.4908666666510148,0.82,0.5557,0.7333,0.325,140.09,109.04,383.89
+hybrid_rerank,semantic,hybrid,True,8,36,0.62,official_ragas,0.6116666666666668,0.4567378305459469,0.74,0.4638503401191805,0.88,0.6285,0.7967,0.235,112.66,109.78,125.03
+hybrid_rerank_semantic,section_semantic,hybrid,True,8,28,0.58,official_ragas,0.5564285714285714,0.4559470868754434,0.24,0.38652222220927146,0.86,0.6339,0.7933,0.36,175.84,178.82,194.19
